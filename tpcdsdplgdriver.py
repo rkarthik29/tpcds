@@ -44,7 +44,11 @@ class TpcdsRunner():
 if __name__=="__main__":
     os.environ['HADOOP_CONF_DIR'] = '/etc/hadoop/conf'  
     os.environ['YARN_CONF_DIR'] = '/etc/hadoop/conf'
-    classpath="/opt/tpcds/jars/gluten-velox-bundle-spark3.5_2.12-amzn_2023_x86_64-1.4.0-SNAPSHOT-nolic.jar:/opt/tpcds/jars/jackson-databind-2.15.2.jar:/opt/tpcds/jars/jackson-annotations-2.15.2.jar:/usr/lib/hadoop/hadoop-common.jar:/usr/lib/hadoop/hadoop-hdfs.jar:/usr/lib/hadoop/hadoop-aws.jar:/usr/share/aws/aws-java-sdk/aws-java-sdk-bundle-1.12.705.jar:/usr/share/aws/aws-java-sdk-v2/aws-sdk-java-bundle-2.23.18.jar:/usr/lib/hadoop/lib/*"
+    classpath="/opt/tpcds/jars/datapelago-gv-bundle-spark3.5_2.12-amzn_2023_x86_64-1.4.0-SNAPSHOT-s3-7apr.jar:"+\
+        "/opt/tpcds/jars/jackson-databind-2.15.2.jar:/opt/tpcds/jars/jackson-annotations-2.15.2.jar:"+\
+            "/usr/lib/hadoop/hadoop-common.jar:/usr/lib/hadoop/hadoop-hdfs.jar:/usr/lib/hadoop/hadoop-aws.jar:"+\
+            "/usr/share/aws/aws-java-sdk/aws-java-sdk-bundle-1.12.705.jar:"+\
+            "/usr/share/aws/aws-java-sdk-v2/aws-sdk-java-bundle-2.23.18.jar:/usr/lib/hadoop/lib/*"
     extraJavaOptions="-Dio.netty.tryReflectionSetAccessible=true"
     conf=SparkConf() \
         .setMaster("yarn") \
@@ -55,10 +59,15 @@ if __name__=="__main__":
         .set("spark.log.level","ERROR") \
         .set("spark.plugins","org.apache.gluten.GlutenPlugin") \
         .set("spark.memory.offHeap.enabled","true") \
-        .set("spark.memory.offHeap.size","4g") \
+        .set("spark.memory.offHeap.size","40g") \
         .set("spark.shuffle.manager","org.apache.spark.shuffle.sort.ColumnarShuffleManager") \
+        .set("spark.appMasterEnv.DP_LF_564871","dummy")\
+        .set("spark.executorEnv.SPARK_LOG_LEVEL","ERROR") \
+        .set("spark.driverEnv.SPARK_LOG_LEVEL","ERROR") \
         .set("spark.gluten.dp.enabled","false") \
         .set("spark.gluten.dp.subid","test") \
+        .set("spark.executorEnv.DP_LF_564871","dummy")\
+        .set("spark.driverEnv.DP_LF_564871","dummy")\
         .set("spark.driver.extraJavaOptions",extraJavaOptions) \
         .set("spark.executor.extraJavaOptions",extraJavaOptions) \
         .set("spark.driver.extraClassPath", classpath) \
