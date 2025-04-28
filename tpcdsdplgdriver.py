@@ -59,7 +59,7 @@ if __name__=="__main__":
         .set("spark.log.level","ERROR") \
         .set("spark.plugins","org.apache.gluten.GlutenPlugin") \
         .set("spark.memory.offHeap.enabled","true") \
-        .set("spark.memory.offHeap.size","40g") \
+        .set("spark.memory.offHeap.size","8g") \
         .set("spark.shuffle.manager","org.apache.spark.shuffle.sort.ColumnarShuffleManager") \
         .set("spark.appMasterEnv.DP_LF_564871","dummy")\
         .set("spark.executorEnv.SPARK_LOG_LEVEL","ERROR") \
